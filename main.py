@@ -20,7 +20,9 @@ def send_start(message):
 
 def send_question(message):
     global counterQuestion
-    key = list(constants.questions)[counterQuestion]
+    questionFile = open('question.txt', 'r')
+    questionLines = questionFile.readlines()
+    key = questionLines[counterQuestion]
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = types.KeyboardButton("1")
     item2 = types.KeyboardButton("2")
@@ -33,9 +35,12 @@ def send_question(message):
 @bot.message_handler(content_types='text')
 def check_answer(message):
     global counterQuestion
-    answer = list(constants.questions.values())[counterQuestion]
 
-    if message.text == answer:
+    answerFile = open('answer.txt', 'r')
+    answerLines = answerFile.readlines()
+    answer = answerLines[counterQuestion]
+
+    if message.text == answer.replace('\n', ''):
         bot.send_message(message.chat.id, "И это правильный ответ!")
     else:
         bot.send_message(message.chat.id, "К сожалению вы проиграли")
