@@ -1,18 +1,10 @@
 import telebot
+import constants
 from telebot import types
 
-API_TOKEN = '6265892037:AAFv23erM049NbdhczXU4aPe8ZcbqGZgF_o'
-
-bot = telebot.TeleBot(API_TOKEN)
+bot = telebot.TeleBot(constants.API_TOKEN)
 
 counterQuestion = 0
-questions = {
-    'Какой национальный цветок Японии? 1.Сакура 2.Ромашка 3.Роза 4.Лилия': '1',
-    'Сколько дней нужно, чтобы Земля совершила оборот вокруг Солнца? 1.364 2.367 3.365 4.370': '3',
-    'Сколько полос на флаге США? 1.9 2.10 3.13 4.15': '3',
-    'Какое животное можно увидеть на логотипе Porsche? 1.Леопард 2.Кенгуру 3.Слон 4.Лошадь': '4',
-    'Сколько элементов в периодической таблице? 1.118 2.120 3.116 4.121': '1',
-}
 
 
 @bot.message_handler(commands=['start'])
@@ -28,7 +20,7 @@ def send_start(message):
 
 def send_question(message):
     global counterQuestion
-    key = list(questions)[counterQuestion]
+    key = list(constants.questions)[counterQuestion]
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = types.KeyboardButton("1")
     item2 = types.KeyboardButton("2")
@@ -41,7 +33,7 @@ def send_question(message):
 @bot.message_handler(content_types='text')
 def check_answer(message):
     global counterQuestion
-    answer = list(questions.values())[counterQuestion]
+    answer = list(constants.questions.values())[counterQuestion]
 
     if message.text == answer:
         bot.send_message(message.chat.id, "И это правильный ответ!")
